@@ -94,6 +94,13 @@ class ProjectViewSet(UserSelectViewSet):
     filter_fields = ('slug',)  # django-filter<2.0.0
     filterset_fields = ('slug',)
 
+    @decorators.action(detail=True, permission_classes=[permissions.IsAdminUser])
+    def environment_variables(self, request, *_, **__):
+        return Response({
+            env.name: env.value
+            for env in self.get_object().environmentvariable_set.all()
+        })
+
     @decorators.action(detail=True)
     def translations(self, *_, **__):
         translations = self.get_object().translations.all()

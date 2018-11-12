@@ -663,7 +663,9 @@ class UpdateDocsTaskStep(SyncRepositoryMixin):
             })
 
         # Update environment from Project's specific environment variables
-        env.update(self.project.environment_variables)
+        env.update(
+            api_v2.project(self.project.pk).environment_variables().get(),
+        )
 
         return env
 
